@@ -1,3 +1,5 @@
+import re
+
 from flask import (
     Flask,
     make_response,
@@ -376,7 +378,7 @@ def home():
         if current_user.role == "admin":
             return render_template("admin_home.html")
         if current_user.role == "owner":
-            return redirect(url_for("owner_dashboard"))
+            return render_template("index.html")
     return render_template("index.html")
 
 
@@ -385,19 +387,49 @@ def home():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        full_name = request.form["full_name"]
-        email     = request.form["email"]
-        password  = request.form["password"]
-        role      = request.form.get("role", "owner")
+        full_name = request.form["full_name"].strip()
+        email = request.form["email"].strip().lower()
+        password = request.form["password"]
+        role = request.form.get("role", "owner")
 
+        # Validate full name
+        if not re.fullmatch(r"[A-Za-zÀ-ÿ' -]+", full_name):
+            flash("Name can only contain letters, spaces, hyphens and apostrophes.")
+            return redirect(url_for("register"))
+
+        # Validate password
+        if len(password) < 8:
+            flash("Password must be at least 8 characters long.")
+            return redirect(url_for("register"))
+
+        if not re.search(r"[A-Z]", password):
+            flash("Password must contain at least one uppercase letter.")
+            return redirect(url_for("register"))
+
+        if not re.search(r"[a-z]", password):
+            flash("Password must contain at least one lowercase letter.")
+            return redirect(url_for("register"))
+
+        if not re.search(r"[0-9]", password):
+            flash("Password must contain at least one number.")
+            return redirect(url_for("register"))
+
+        if not re.search(r"[^A-Za-z0-9]", password):
+            flash("Password must contain at least one special character.")
+            return redirect(url_for("register"))
+
+        # Check if email already exists
         if User.query.filter_by(email=email).first():
             flash("Email already exists.")
             return redirect(url_for("register"))
 
+        # Create user
         user = User(full_name=full_name, email=email, role=role)
         user.set_password(password)
+
         db.session.add(user)
         db.session.commit()
+
         login_user(user)
         return redirect(url_for("home"))
 
@@ -605,7 +637,7 @@ def sale():
             valuation_id=v.id,
         )
 
-    return render_template("sale.html")
+    return render_template("sale.html", current_year=datetime.now().year)
 
 
 @app.route("/download_sale_report")
@@ -724,7 +756,7 @@ def rental():
             valuation_id=v.id,
         )
 
-    return render_template("rental.html")
+    return render_template("rental.html", current_year=datetime.now().year)
 
 
 @app.route("/download_rental_report")
@@ -943,7 +975,7 @@ def insurance_assessment():
             assessment_id=a.id,
         )
 
-    return render_template("insurance_assessment.html")
+    return render_template("insurance_assessment.html", current_year=datetime.now().year)
 
 
 # Insurance assessments CRUD

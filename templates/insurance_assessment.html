@@ -97,33 +97,34 @@
 
                 <div class="field field-narrow">
                     <label>Bedrooms</label>
-                    <input type="number" name="bedrooms" class="field-control" value="3">
+                    <input type="number" name="bedrooms" class="field-control" placeholder="2" min="0">
                 </div>
 
                 <div class="field field-narrow">
                     <label>Bathrooms</label>
-                    <input type="number" name="bathrooms" class="field-control" value="2">
+                    <input type="number" name="bathrooms" class="field-control" placeholder="2" min="0">
                 </div>
 
                 <div class="field">
                     <label>Floor size (sqm)</label>
-                    <input type="number" name="floor_size_sqm" class="field-control" value="120">
+                    <input type="number" name="floor_size_sqm" class="field-control" placeholder="120" min="0">
                 </div>
 
                 <div class="field">
                     <label>Year built</label>
-                    <input type="number" name="year_built" class="field-control" value="2020">
+                    <input type="number" name="year_built" class="field-control" placeholder="2020" min="1800" max={{ current_year }}>
                 </div>
 
                 <div class="field field-narrow">
                     <label>Parking spaces</label>
-                    <input type="number" name="parking_spaces" class="field-control" value="1">
+                    <input type="number" name="parking_spaces" class="field-control" placeholder="1" min="0">
                 </div>
 
                 <div class="field field-narrow">
                     <label>Floor number</label>
-                    <input type="number" name="floor_number" class="field-control" value="1">
+                    <input type="number" name="floor_number" class="field-control" placeholder="1" min="0">
                 </div>
+
 
             </div>
 
@@ -142,6 +143,7 @@
                 <div class="field">
                     <label>Condition</label>
                     <select name="condition" class="field-control">
+                        <option value="">Select condition</option>
                         <option>Excellent</option>
                         <option>Good</option>
                         <option>Fair</option>
@@ -152,6 +154,7 @@
                 <div class="field">
                     <label>Furnishing</label>
                     <select name="furnishing" class="field-control">
+                        <option value="">Select furnishing</option>
                         <option>Furnished</option>
                         <option>Semi-Furnished</option>
                         <option>Unfurnished</option>

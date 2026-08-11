@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  flask-app:
+    image: dockerallang/ai-valuation:dev-build%build.number%
+    container_name: ai-valuation-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=${FLASK_ENV:-production}
+      - FLASK_APP=${FLASK_APP:-app.py}
+      - SECRET_KEY=${SECRET_KEY}
+      - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
+    volumes:
+      - ./models:/app/models
+      - ./instance:/app/instance
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

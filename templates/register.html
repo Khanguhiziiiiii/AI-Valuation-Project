@@ -51,7 +51,11 @@
                 type="text"
                 name="full_name"
                 class="field-control"
-                placeholder="Jane Wanjiru"
+                placeholder="John Doe"
+                pattern="[A-Za-zÀ-ÿ]+(?:[ '-][A-Za-zÀ-ÿ]+)+"
+                minlength="2"
+                maxlength="100"
+                title="Please enter a valid name using letters and spaces only."
                 required>
             </div>
 
@@ -62,6 +66,7 @@
                 name="email"
                 class="field-control"
                 placeholder="you@example.com"
+                maxlength="120"
                 required>
             </div>
 
@@ -80,6 +85,10 @@
                 name="password"
                 class="field-control"
                 placeholder="Create a password"
+                minlength="8"
+                maxlength="128"
+                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}"
+                title="Password must be at least 8 characters and contain an uppercase letter, lowercase letter, number, and special character."
                 required>
             </div>
 
